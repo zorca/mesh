@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UploadExcelFileRequest;
 use App\Imports\RowsImport;
+use App\Jobs\ExcelImport;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -38,7 +40,7 @@ class ManageExcelFiles extends Controller
         $uniqueID = Str::uuid()->toString();
         $path = Storage::put($uniqueID . '.' . $fileExtension, $file);
 
-        Excel::import(new RowsImport, $path);
+        ExcelImport::dispatch('imports_' . $uniqueID, $path);
 
         return back();
     }

@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UploadExcelFileRequest;
+use App\Imports\RowsImport;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ManageExcelFiles extends Controller
 {
@@ -29,6 +33,13 @@ class ManageExcelFiles extends Controller
      */
     public function store(UploadExcelFileRequest $uploadExcelFileRequest)
     {
+        $file = $uploadExcelFileRequest->file('file');
+        $fileExtension = $file->extension();
+        $uniqueID = Str::uuid()->toString();
+        $path = Storage::put($uniqueID . '.' . $fileExtension, $file);
+
+        Excel::import(new RowsImport, $path);
+
         return back();
     }
 

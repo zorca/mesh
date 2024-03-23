@@ -33,3 +33,5 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 });
+
+Route::resource('manage-excel-files', \App\Http\Controllers\ManageExcelFiles::class);

@@ -65,6 +65,11 @@ services:
                 - ping
             retries: 3
             timeout: 5s
+    rabbitmq:
+        image: rabbitmq:3.12-management-alpine
+        ports:
+            - "5672:5672"
+            - "15672:15672"
     mailpit:
         image: 'axllent/mailpit:latest'
         ports:

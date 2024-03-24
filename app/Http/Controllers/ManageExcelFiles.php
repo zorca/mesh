@@ -38,7 +38,7 @@ class ManageExcelFiles extends Controller
         $file = $uploadExcelFileRequest->file('file');
         $fileExtension = $file->extension();
         $uniqueID = Str::uuid()->toString();
-        $path = Storage::put($uniqueID . '.' . $fileExtension, $file);
+        $path = $file->storeAs('files', $uniqueID . '.' . $fileExtension);
 
         ExcelImport::dispatch('imports_' . $uniqueID, $path);
 

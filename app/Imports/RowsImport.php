@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Events\ImportUpdated;
 use App\Models\Row;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
@@ -32,7 +33,9 @@ class RowsImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChunk
     */
     public function model(array $row)
     {
+        sleep(1);
         Redis::set($this->uniqueImportID, $this->getRowNumber());
+        broadcast(new ImportUpdated($this->uniqueImportID, $this->getRowNumber()));
         return new Row([
             'id' => $row['id'],
             'name' => $row['name'],

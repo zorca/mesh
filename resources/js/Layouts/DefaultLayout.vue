@@ -31,8 +31,11 @@ defineProps({
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink :href="route('manage-excel-files.create')" :active="route().current('manage-excel-files.create')">
+                                    Upload Excel Files for Import Rows
+                                </NavLink>
                                 <NavLink :href="route('manage-excel-files.index')" :active="route().current('manage-excel-files.index')">
-                                    Manage Excel Files
+                                    Manage Imported Rows
                                 </NavLink>
                             </div>
                         </div>

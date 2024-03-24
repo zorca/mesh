@@ -34,4 +34,5 @@ Route::middleware([
     })->name('dashboard');
 });
 
+Route::delete('manage-excel-files', [\App\Http\Controllers\ManageExcelFiles::class, 'destroyAll'])->name('manage-excel-files.destroy-all');
 Route::resource('manage-excel-files', \App\Http\Controllers\ManageExcelFiles::class);

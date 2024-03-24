@@ -3,14 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UploadExcelFileRequest;
-use App\Imports\RowsImport;
 use App\Jobs\ExcelImport;
+use App\Models\Row;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
-use Maatwebsite\Excel\Facades\Excel;
 
 class ManageExcelFiles extends Controller
 {
@@ -19,7 +17,10 @@ class ManageExcelFiles extends Controller
      */
     public function index()
     {
-        return Inertia::render('ManageExcelFiles/Index');
+        $entities = Row::paginate(10);
+        return Inertia::render('ManageExcelFiles/Index', [
+            'entities' => $entities->setCollection($entities->groupBy('date')),
+        ]);
     }
 
     /**
@@ -27,7 +28,7 @@ class ManageExcelFiles extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('ManageExcelFiles/Create');
     }
 
     /**
@@ -75,5 +76,14 @@ class ManageExcelFiles extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    /**
+     * Remove resources from storage.
+     */
+    public function destroyAll(): \Illuminate\Http\RedirectResponse
+    {
+        Row::query()->delete();
+        return back();
     }
 }

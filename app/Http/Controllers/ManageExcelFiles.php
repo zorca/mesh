@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UploadExcelFileRequest;
 use App\Jobs\ExcelImport;
 use App\Models\Row;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -81,9 +83,10 @@ class ManageExcelFiles extends Controller
     /**
      * Remove resources from storage.
      */
-    public function destroyAll(): \Illuminate\Http\RedirectResponse
+    public function destroyAll(Filesystem $filesystem): \Illuminate\Http\RedirectResponse
     {
         Row::query()->delete();
+        $filesystem->cleanDirectory(storage_path('files'));
         return back();
     }
 }
